@@ -1,0 +1,44 @@
+* Overview
+
+This project is to train barcode scanner with YOLO and run the model with OpenCV.
+
+* Dataset
+
+You can download barcode dataset from Kaggle:
+[[https://www.kaggle.com/datasets/whoosis/barcode-detection-annotated-dataset][Barcode Detection Annotated]]
+
+** Preparation
+
+We need to prepare the dataset prior training. It consist splitting them into appropriate folder and modifying config file.
+
+- Copy all image and their respective description files into single directory data/obj/
+  - open split_file.py and modify allowed image extension if necessary
+    - execute split_file.py
+      - data Dataset is ready in data/images/
+	- edit yolov5/dataset.yaml to adjust class number and name. Please note the order of name must be consistent with your initial dataset numbering.
+
+	  
+	  
+** Convert model to ONNX format
+
+This is required for OpenCV to consume the model. Use this command to convert
+
+#+BEGIN_SRC bash
+  # Adjust best.pt to your model location 
+  python3 export.py --weights runs/train/exp3/weights/best.pt --img 640 --include torchscript onnx
+#+END_SRC
+
+* Troubleshooting
+
+** Error with freetype
+
+You may encountered error about Freetype. This command may solve the problem
+
+#+BEGIN_SRC bash
+pip install Pillow==9.5.0
+#+END_SRC
+
+
+* References
+[[https://medium.com/mlearning-ai/training-yolov5-custom-dataset-with-ease-e4f6272148ad][Training YOLO v5 with Ease]]
+[[https://medium.com/mlearning-ai/detecting-objects-with-yolov5-opencv-python-and-c-c7cf13d1483c][Detecting object with YOLO v5, OpenCV in Python and CPP]]
